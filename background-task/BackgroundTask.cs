@@ -1,4 +1,5 @@
 ﻿using System;
+using Windows.Services.Store;
 using Windows.UI.Notifications;
 using Windows.Data.Xml.Dom;
 using Windows.ApplicationModel.Background;
@@ -7,6 +8,8 @@ namespace BackgroundTask
 {
     public sealed class BackgroundTask : IBackgroundTask
     {
+        private StoreContext storeContext = StoreContext.getDefault();
+
         /// <summary>
         /// The Run method is the entry point of a background task.
         /// </summary>
@@ -17,6 +20,7 @@ namespace BackgroundTask
 
             ShowToast("Hi, I'm Electron's UWP sidekick");
             UpdateTile("Hi, I'm Electron's UWP sidekick");
+            CheckTrialStatus();
         }
 
         /// <summary>
@@ -48,6 +52,10 @@ namespace BackgroundTask
 
             TileNotification tileNotification = new TileNotification(tileXml);
             TileUpdateManager.CreateTileUpdaterForApplication().Update(tileNotification);
+        }
+
+        public void CheckTrialStatus() {
+            Console.WriteLine("checking trial status");
         }
     } 
 }
