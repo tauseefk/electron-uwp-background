@@ -8,7 +8,7 @@ namespace BackgroundTask
 {
     public sealed class BackgroundTask : IBackgroundTask
     {
-        private StoreContext storeContext = StoreContext.getDefault();
+        private StoreContext storeContext = StoreContext.GetDefault();
 
         /// <summary>
         /// The Run method is the entry point of a background task.
@@ -19,8 +19,7 @@ namespace BackgroundTask
             // ✨ 🎉 ✨ 🎉 ✨ 🎉✨ 🎉 ✨ 🎉 ✨ 🎉 ✨ 
 
             ShowToast("Hi, I'm Electron's UWP sidekick");
-            UpdateTile("Hi, I'm Electron's UWP sidekick");
-            CheckTrialStatus();
+            //CheckTrialStatus();
         }
 
         /// <summary>
@@ -36,7 +35,7 @@ namespace BackgroundTask
             toastTextElements[1].AppendChild(toastXml.CreateTextNode(DateTime.Now.ToString()));
 
             ToastNotification toast = new ToastNotification(toastXml);
-            ToastNotificationManager.CreateToastNotifier().Show(toast); 
+            ToastNotificationManager.CreateToastNotifier().Show(toast);
         }
 
         /// <summary>
@@ -54,8 +53,28 @@ namespace BackgroundTask
             TileUpdateManager.CreateTileUpdaterForApplication().Update(tileNotification);
         }
 
-        public void CheckTrialStatus() {
-            Console.WriteLine("checking trial status");
+        public async void CheckTrialStatus()
+        {
+            string[] filterList = new string[] { "Consumable", "Durable", "UnmanagedConsumable" };
+            StoreAppLicense license = await storeContext.GetAppLicenseAsync();
+            //StoreProductQueryResult addOns = await storeContext.GetAssociatedStoreProductsAsync(filterList);
+            //ShowToast(addOns.ToString());
+            if (license.IsActive)
+            {
+                if (license.IsTrial)
+                {
+                    UpdateTile("Trial license");
+                }
+                else
+                {
+                    UpdateTile("Full license");
+                }
+            }
+            else
+            {
+                UpdateTile("This license seems broken!");
+                ShowToast("this license ain't working!");
+            }
         }
-    } 
+    }
 }

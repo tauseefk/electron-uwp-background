@@ -1,0 +1,1 @@
+C:\Users\Tauseef\work\electron-uwp-background\background-task\BackgroundTask.csproj;arm
