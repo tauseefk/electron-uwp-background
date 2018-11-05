@@ -3,3 +3,8 @@ electron-app/registerer
 appx-assets/BackgroundTask.pri
 appx-assets/BackgroundTask.winmd
 output
+background-task/obj
+background-task/bin
+background-task-registerer/obj
+background-task-registerer/bin
+.vs
